@@ -1,5 +1,5 @@
-*/venv
-*/__pycache__.py
+*env*
+*__pycache__.py
 *.pyc
 *.pyo
 *.egg-info
@@ -7,3 +7,5 @@
 *.dist-info
 *.pyc
 *.dist-info/*
+
+*test*
