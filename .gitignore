@@ -5,4 +5,5 @@
 *.egg-info
 *.egg-info/*
 *.dist-info
+*.pyc
 *.dist-info/*
