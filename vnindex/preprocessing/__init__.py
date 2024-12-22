@@ -1,5 +1,6 @@
 import pandas as pd
-# from .vnindex.preprocessing.normalize import Normalize
+from vnindex.preprocessing.normalize import Normalize
+from sklearn.preprocessing import StandardScaler
 
 class Preprocessing:
     """
@@ -7,10 +8,10 @@ class Preprocessing:
     """
     def __init__(self, file_path: str):
         self.data = self.read_data(file_path)
-        # self.normalize = Normalize(self.data)
-
         self.execute()
-        return self.data
+        self.scaler = StandardScaler(self.data)
+        self.data = self.scaler.fit(self.data)
+        self.data = pd.DataFrame(self.data)
 
     def read_data(self, file_path: str):
         """
@@ -19,6 +20,7 @@ class Preprocessing:
             output: dataframe
         """
         df = pd.read_csv(file_path)
+        df = df.dropna()
         return df
 
     def execute(self):
@@ -28,10 +30,13 @@ class Preprocessing:
         new_data = {'DATE': [], 'PRICE': [], 'OPEN': [], 'HIGH': [], 'LOW': [], 'VOL': [], 'CHANGE': []}
         for col in self.data:
             for row in self.data[col]:
-                if col == 'DATE':
-                    new_data[col].append(self.normalize.normalize_date(row))
-                else:
-                    new_data[col].append(self.normalize.normalize_number(row))
+                if row != '':
+                    row = str(row)
+
+                    if col == 'DATE':
+                        new_data[col].append(Normalize.normalize_date(row))
+                    else:
+                        new_data[col].append(Normalize.normalize_number(row))
 
         self.data = pd.DataFrame(new_data)
 

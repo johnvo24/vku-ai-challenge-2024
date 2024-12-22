@@ -21,5 +21,3 @@ class Normalize():
     """
     date_obj = datetime.strptime(date_str, format)
     return int(date_obj.strftime("%Y%m%d"))%1000000
-
-print(Normalize.normalize_date("12/07/2001"))
