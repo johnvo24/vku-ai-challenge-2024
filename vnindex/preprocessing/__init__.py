@@ -9,8 +9,8 @@ class Preprocessing:
     def __init__(self, file_path: str):
         self.data = self.read_data(file_path)
         self.execute()
-        self.scaler = StandardScaler(self.data)
-        self.data = self.scaler.fit(self.data)
+        self.scaler = StandardScaler()
+        self.data = self.scaler.fit_transform(self.data)
         self.data = pd.DataFrame(self.data)
 
     def read_data(self, file_path: str):
@@ -20,8 +20,11 @@ class Preprocessing:
             output: dataframe
         """
         df = pd.read_csv(file_path)
+        # Lazy data handling, need to be removed in real competition
         df = df.dropna()
-        return df
+        # Reverse data from bottom to top (from oldest to latest for more accurate prediction)
+        df_reversed = df.iloc[::-1].reset_index(drop=True)
+        return df_reversed
 
     def execute(self):
         """

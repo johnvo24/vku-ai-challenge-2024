@@ -1,2 +1,2 @@
 from vnindex.preprocessing import Preprocessing
-from vnindex.models import Modeling
+from vnindex.models import Modelling

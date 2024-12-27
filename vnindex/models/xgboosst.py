@@ -9,8 +9,6 @@ class XGBoost:
         self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(
             self.data[:, :-1], self.data[:, -1], test_size=0.2, random_state=42
         )
-        print(self.data[:, :-1].shape)
-        print(self.data[:, -1].shape)
         self.model = xgb.XGBRegressor(objective='reg:squarederror', colsample_bytree=0.3, learning_rate=0.01,
                          max_depth=5, alpha=10, n_estimators=1000)
 
