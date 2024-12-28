@@ -3,39 +3,56 @@ import numpy as np
 from vnindex.models.lstm import LSTM
 
 class Modelling:
-    def __init__(self, input=None, num_predict_date=1, num_date=6):
-        input = self.data_split(input, num_date)
-        print(f'Input shape: {input.shape}')
+    '''
+        This class is for modelling ML and DL models
+    '''
+    def __init__(self, input=None, num_predict_date=1, num_date=6, target_col=2):
+        inp, out = self.data_split(input, num_date, num_predict_date, target_col)
+        print(f'Input shape: {inp.shape}, Output shape: {out.shape}')
 
-        threshold = int(0.8 * len(input))
+        # Split into training and testing data
+        threshold = int(0.8 * len(inp))
         data = {
             'train': {
-                'x': np.delete(input[:threshold], 2, axis=-1),
-                'y': input[:threshold, :, 2]
+                # 'x': np.delete(input[:threshold], target_col, axis=-1),
+                'x': inp[:threshold, :, :],
+                'y': out[:threshold, :]
             },
             'test': {
-                'x': np.delete(input[threshold:], 2, axis=-1),
-                'y': input[threshold:, :, 2]
+                # 'x': np.delete(input[threshold:], target_col, axis=-1),
+                'x': inp[threshold:, :, :],
+                'y': out[threshold:, :]
             }
         }
-        # chia tap test ra thanh output n ngay tiep theo, chua xong
+
         print(f'X Training shape: {data["train"]["x"].shape}, X Testing shape: {data["test"]["x"].shape}')
         print(f'Y Training shape: {data["train"]["y"].shape}, Y Testing shape: {data["test"]["y"].shape}')
         self.input = data
 
-        self.xgboost = XGBoost(self.input)
-        self.lstm = LSTM(self.input, num_predict_date)
+        # Call models
+        # self.xgboost = XGBoost(self.input)
+        self.lstm = LSTM(data, num_predict_date)
 
-    def data_split(self, data, num_date):
-        new_df = []
+    def data_split(self, data, num_date, num_predict_date, target_col):
+        '''
+            Handling data from 2D to 3D (batch, date, col), using algorithm to split input and output for modelling step
+        '''
+        input = []
+        output = []
 
-        for i in range(0, len(data) - num_date + 1):
-            temp = []
+        for i in range(0, len(data) - num_date - num_predict_date + 1):
+            temp_inp = []
+            temp_out = []
             for j in range(i, i + num_date):
-                temp.append(data[j])
-            new_df.append(temp)
+                temp_inp.append(data[j])
+            for j in range(i + num_date, i + num_date + num_predict_date):
+                temp_out.append(data[j][target_col])
 
-        new_df = np.array(new_df)
+            input.append(temp_inp)
+            output.append(temp_out)
 
-        return new_df
+        input = np.array(input)
+        output = np.array(output)
+
+        return input, output
 

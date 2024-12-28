@@ -1,17 +1,25 @@
-from vnindex import Preprocessing, Modelling
+from vnindex import Preprocessing, Modelling, Chart
 import numpy as np
 import pandas as pd
 
-preprocessing = Preprocessing('res/dataset.csv')
-data = preprocessing.data
-data = data.values
+# Draw charts
+data = pd.read_csv('res/dataset.csv')
+data = data.dropna()
+chart = Chart(data)
+# chart.ScatterPlot('VOL', 'CHANGE')
+# chart.ScatterPlot('PRICE', 'OPEN')
+chart.PairPlot()
 
-model = Modelling(input=data, num_predict_date=3, num_date=6)
+# preprocessing = Preprocessing('res/dataset.csv')
+# data = preprocessing.data
+# data = data.values
+#
+# model = Modelling(input=data, num_predict_date=1, num_date=14)
 
 # XGBOOST MODELLING
 # model.xgboost.train()
 # model.xgboost.eval()
 
 # LSTM MODELLING
-model.lstm.train()
-model.lstm.eval()
+# model.lstm.train()
+# model.lstm.eval()
