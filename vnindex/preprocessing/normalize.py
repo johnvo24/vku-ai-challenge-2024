@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+import random
 
 class Normalize():
   def normalize_number(input_str):
@@ -12,11 +13,12 @@ class Normalize():
     """
     normalized = re.sub(r'[^0-9.-BMK]', '', input_str)
     if 'M' in input_str:
-        normalized = float(normalized.replace('M', '')) * 1e6
+      normalized = float(normalized.replace('M', '')) * 1e6
     elif 'B' in input_str:
-        normalized = float(normalized.replace('B', '')) * 1e9
+      normalized = float(normalized.replace('B', '')) * 1e9
     elif 'K' in input_str:
-        normalized = float(normalized.replace('K', '')) * 1e3
+      normalized = float(normalized.replace('K', '')) * 1e3
+      if int(normalized) == 0: normalized = float(random.randint(1, 9))
     return normalized if normalized else float('nan')
   
   def normalize_date(date_str, format='%d/%m/%Y'):

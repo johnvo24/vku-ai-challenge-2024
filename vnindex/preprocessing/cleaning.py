@@ -5,5 +5,17 @@ class Cleaner():
     # drop NaN in rows
     df.dropna(axis=0, thresh=int())
     
+ 
+import pandas as pd
+from normalize import Normalize
 
-    
+df = pd.read_csv('res/dataset.csv')
+
+df['DATE'] = df['DATE'].apply(lambda x: Normalize.normalize_date(x, format='%d/%m/%Y'))
+
+columns_to_normalize = ['PRICE', 'OPEN', 'HIGH', 'LOW', 'VOL', 'CHANGE']
+for column in columns_to_normalize:
+    df[column] = df[column].apply(lambda x: Normalize.normalize_number(str(x)))
+
+# print(f"Num rows with NaN: {df[df.isna().any(axis=1)]}")
+print(df)
