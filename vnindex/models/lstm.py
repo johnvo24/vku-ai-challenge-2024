@@ -17,17 +17,17 @@ class LSTM_Module(nn.Module):
 class LSTM:
     def __init__(self, data, output_size):
         self.data = data
-        self.x_train = torch.tensor(self.x_train, dtype=torch.float32)
-        self.y_train = torch.tensor(self.y_train, dtype=torch.float32)
-        self.x_test = torch.tensor(self.x_test, dtype=torch.float32)
-        self.y_test = torch.tensor(self.y_test, dtype=torch.float32)
+        self.x_train = torch.tensor(self.data['train']['x'], dtype=torch.float32)
+        self.y_train = torch.tensor(self.data['train']['y'], dtype=torch.float32)
+        self.x_test = torch.tensor(self.data['test']['x'], dtype=torch.float32)
+        self.y_test = torch.tensor(self.data['test']['y'], dtype=torch.float32)
 
-        self.epoch = 10
+        self.epoch = 1000
         self.batch_size = 8
         self.hidden_size = 32
         self.output_size = output_size
 
-        self.model = LSTM_Module(self.data.shape[2], self.hidden_size, self.output_size)
+        self.model = LSTM_Module(self.x_train.size(2), self.hidden_size, self.output_size)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=0.001)
         self.loss = nn.MSELoss()
 
@@ -36,8 +36,8 @@ class LSTM:
         for epoch in range(self.epoch):
             self.optimizer.zero_grad()
             output = self.model(self.x_train)
-            self.loss = self.loss(output, self.y_train.view(-1, 1))
-            self.loss.backward()
+            loss = self.loss(output, self.y_train)
+            loss.backward()
             self.optimizer.step()
 
             print(f'Epoch: {epoch + 1}, Loss: {loss.item():.4f}')
@@ -46,5 +46,5 @@ class LSTM:
         self.model.eval()
         with torch.no_grad():
             output = self.model(self.x_test)
-            loss = self.loss(output, self.y_test.view(-1, 1))
+            loss = self.loss(output, self.y_test)
             print(f'Loss: {loss.item():.4f}')
