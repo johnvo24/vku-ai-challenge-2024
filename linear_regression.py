@@ -4,16 +4,18 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from vnindex import Preprocessing
 import matplotlib.pyplot as plt
+import numpy as np
 import joblib
 
 class LinearRegressionModel():
   def __init__(self):
-    preprocessing = Preprocessing('res/dataset.csv')
-    data = preprocessing.data
+    self.preprocessing = Preprocessing('res/test.csv')
+    data = self.preprocessing.data
     data = data.values
     self.X_data = data[:-1,:]
     self.y_data = data[1:, 1]
     self.model = LinearRegression()
+    self.folder = "results/linear_regression/"
     # print(pd.concat([pd.DataFrame(train_dataset), pd.DataFrame(label_dataset)], axis=1))
 
   def train(self): 
@@ -24,13 +26,14 @@ class LinearRegressionModel():
     # y_train = self.y_data[:threshold]
     # y_test = self.y_data[threshold:]
     self.model.fit(X_train, y_train)
-    self.evaluate(X_test, y_test)
     # Save model
-    joblib.dump(self.model, 'linear_regression_model.pkl')
+    joblib.dump(self.model, self.folder+'linear_regression_model.pkl')
     print("Saved the model!")
+    self.evaluate(X_test, y_test)
 
   def evaluate(self, X_test, y_test):
     # Đánh giá mô hình
+    self.model = joblib.load(self.folder+'linear_regression_model.pkl')
     y_pred = self.model.predict(X_test)
     mse = mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
@@ -50,11 +53,17 @@ class LinearRegressionModel():
     plt.title("So sánh giá thực tế và giá dự đoán")
     plt.xlabel("Mẫu")
     plt.ylabel("Giá cổ phiếu")
-    plt.savefig('results/linear_regression/plot.png')
+    plt.savefig(self.folder+'/plot.png')
 
   def predict(self, x_data):
-
-    print(self.model.predict(x_data))
+    self.model = joblib.load(self.folder+'linear_regression_model.pkl')
+    y_pred = self.model.predict(x_data)
+    predicted_scaled_expanded = np.repeat([y_pred], 7, axis=1)
+    predict = self.preprocessing.scaler.inverse_transform(predicted_scaled_expanded)
+    print(self.preprocessing.scaler.inverse_transform(x_data))
+    return predict
 
 lr = LinearRegressionModel()
-lr.train()
+print(lr.X_data[1])
+print(f"Prediction Input: {lr.X_data[1]}")
+print(lr.predict([lr.X_data[1]]))

@@ -1,0 +1,93 @@
+Mô hình VAR (Vector AutoRegression) là một mô hình phổ biến trong phân tích chuỗi thời gian đa biến, giúp dự đoán giá trị của một hoặc nhiều biến dựa trên quá khứ của chính chúng và các biến khác. VAR đặc biệt hữu ích khi bạn có nhiều chuỗi thời gian liên quan với nhau, như dữ liệu chứng khoán, nơi các yếu tố như giá cổ phiếu, khối lượng giao dịch, và các chỉ số khác có thể ảnh hưởng lẫn nhau.
+Các bước để xây dựng mô hình VAR cho dữ liệu chứng khoán
+
+    Tiền xử lý dữ liệu: Đảm bảo rằng các chuỗi thời gian có độ dài đủ lớn và dữ liệu không có giá trị thiếu (NaN).
+    Đảm bảo tính dừng (Stationarity): Mô hình VAR yêu cầu các chuỗi thời gian phải là dừng (stationary), nghĩa là chúng không có xu hướng theo thời gian. Nếu dữ liệu không dừng, bạn cần biến đổi nó (differencing).
+    Xây dựng mô hình VAR: Sau khi tiền xử lý, bạn có thể sử dụng thư viện statsmodels để xây dựng mô hình VAR.
+    Đánh giá mô hình và dự đoán: Kiểm tra độ chính xác của mô hình và sử dụng nó để dự đoán giá trị tương lai.
+
+Cài đặt mô hình VAR với dữ liệu chứng khoán
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from statsmodels.tsa.api import VAR
+from statsmodels.tsa.stattools import adfuller
+from sklearn.preprocessing import MinMaxScaler
+
+# Giả sử bạn đã có dataframe df chứa dữ liệu chứng khoán
+df['DATE'] = pd.to_datetime(df['DATE'], format='%d%m%y')
+df.set_index('DATE', inplace=True)
+
+# Chọn các cột để sử dụng trong mô hình VAR (ví dụ: PRICE, OPEN, HIGH, LOW, VOL)
+df = df[['PRICE', 'OPEN', 'HIGH', 'LOW', 'VOL']].dropna()  # Loại bỏ các dòng NaN
+
+# Kiểm tra tính dừng của chuỗi thời gian (ADF Test)
+def test_stationarity(data):
+    result = adfuller(data)
+    print(f'ADF Statistic: {result[0]}')
+    print(f'p-value: {result[1]}')
+    if result[1] > 0.05:
+        print("Không dừng (Non-stationary), cần phải làm biến đổi (differencing)")
+    else:
+        print("Dữ liệu đã dừng (Stationary)")
+
+# Kiểm tra tính dừng của từng chuỗi
+for column in df.columns:
+    print(f"Kiểm tra tính dừng cho {column}:")
+    test_stationarity(df[column])
+
+# Nếu dữ liệu chưa dừng, ta có thể làm biến đổi bằng cách lấy sự khác biệt (differencing)
+df_diff = df.diff().dropna()
+
+# Phân chia dữ liệu thành tập huấn luyện và kiểm tra (80% - 20%)
+train_size = int(len(df_diff) * 0.8)
+train, test = df_diff[:train_size], df_diff[train_size:]
+
+# Xây dựng mô hình VAR
+model = VAR(train)
+model_fitted = model.fit(5)  # Sử dụng số độ trễ (lags) = 5, có thể thay đổi
+
+# Dự đoán với mô hình đã huấn luyện
+forecast = model_fitted.forecast(train.values[-5:], steps=len(test))
+
+# Chuyển đổi kết quả dự đoán trở lại giá trị gốc
+forecast_cumsum = np.cumsum(forecast, axis=0)
+forecast_original = pd.DataFrame(forecast_cumsum, columns=df.columns, index=test.index)
+
+# Vẽ biểu đồ so sánh giá trị thực tế và giá trị dự đoán
+plt.figure(figsize=(10,6))
+for column in df.columns:
+    plt.plot(test.index, test[column], label=f'True {column}')
+    plt.plot(forecast_original.index, forecast_original[column], label=f'Predicted {column}', linestyle='--')
+
+plt.legend()
+plt.title("Dự đoán giá cổ phiếu với mô hình VAR")
+plt.show()
+
+Các bước giải thích trong mã:
+
+    Tiền xử lý dữ liệu:
+        Chuyển DATE sang định dạng datetime và thiết lập làm chỉ mục cho DataFrame.
+        Chọn các cột liên quan như PRICE, OPEN, HIGH, LOW, và VOL để sử dụng trong mô hình. Loại bỏ các dòng dữ liệu có giá trị thiếu.
+
+    Kiểm tra tính dừng:
+        Sử dụng kiểm tra ADF (Augmented Dickey-Fuller test) để xác định tính dừng của các chuỗi thời gian. Nếu p-value lớn hơn 0.05, chuỗi thời gian là không dừng và bạn cần làm biến đổi (differencing).
+
+    Làm biến đổi (Differencing):
+        Nếu cần thiết, áp dụng differencing để làm cho chuỗi thời gian dừng.
+
+    Phân chia dữ liệu:
+        Chia dữ liệu thành tập huấn luyện và kiểm tra với tỷ lệ 80/20.
+
+    Xây dựng mô hình VAR:
+        Sử dụng thư viện statsmodels để xây dựng mô hình VAR và huấn luyện mô hình với 5 độ trễ (lags). Số độ trễ có thể điều chỉnh tùy theo dữ liệu.
+
+    Dự đoán và vẽ biểu đồ:
+        Dự đoán giá trị cho các chuỗi thời gian trong tập kiểm tra.
+        Chuyển đổi dự đoán trở lại giá trị gốc và vẽ biểu đồ so sánh giá trị thực tế với giá trị dự đoán.
+
+Lưu ý:
+
+    Tuning độ trễ (lags): Việc chọn số độ trễ (lags) là rất quan trọng trong mô hình VAR. Bạn có thể thử nghiệm với nhiều giá trị khác nhau hoặc sử dụng các chỉ số đánh giá (AIC, BIC) để chọn giá trị tối ưu cho độ trễ.
+    Kiểm tra tính dừng: Nếu các chuỗi thời gian không dừng, bạn cần làm biến đổi hoặc sử dụng các mô hình có khả năng xử lý dữ liệu phi dừng.

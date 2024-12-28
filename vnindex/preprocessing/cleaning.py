@@ -16,6 +16,5 @@ df['DATE'] = df['DATE'].apply(lambda x: Normalize.normalize_date(x, format='%d/%
 columns_to_normalize = ['PRICE', 'OPEN', 'HIGH', 'LOW', 'VOL', 'CHANGE']
 for column in columns_to_normalize:
     df[column] = df[column].apply(lambda x: Normalize.normalize_number(str(x)))
-
-# print(f"Num rows with NaN: {df[df.isna().any(axis=1)]}")
-print(df)
+print(f"Num rows with NaN: {df.isna().any(axis=1).sum()}")
+print(f"Rows with NaN: {df[df.isna().any(axis=1)]}")

@@ -1,0 +1,161 @@
+Đối với dữ liệu chứng khoán, bạn có thể sử dụng các phương pháp đánh giá (loss functions) khác nhau tùy thuộc vào loại mô hình (hồi quy hay phân loại). Dưới đây là một số phương pháp đánh giá phổ biến:
+1. Hồi quy (Regression)
+
+Mô hình hồi quy thường dự báo các giá trị liên tục, chẳng hạn như giá cổ phiếu trong tương lai.
+
+    Mean Squared Error (MSE): Được tính bằng trung bình bình phương sai số giữa giá trị dự đoán và giá trị thực tế. Đây là phương pháp đánh giá phổ biến trong các bài toán hồi quy.
+    MSE=1n∑i=1n(yi−y^i)2
+    MSE=n1​i=1∑n​(yi​−y^​i​)2
+
+    Root Mean Squared Error (RMSE): Là căn bậc hai của MSE, giúp làm rõ mức độ sai số trong cùng đơn vị với dữ liệu.
+    RMSE=MSE
+    RMSE=MSE
+
+    ​
+
+    Mean Absolute Error (MAE): Trung bình của giá trị tuyệt đối của sai số giữa giá trị thực tế và giá trị dự đoán. MAE không bị ảnh hưởng mạnh bởi các giá trị ngoại lai.
+    MAE=1n∑i=1n∣yi−y^i∣
+    MAE=n1​i=1∑n​∣yi​−y^​i​∣
+
+    R-squared (R²): Đo lường tỷ lệ phương sai của dữ liệu được giải thích bởi mô hình. Nếu giá trị R² càng gần 1, mô hình càng phù hợp.
+    R2=1−∑i=1n(yi−y^i)2∑i=1n(yi−yˉ)2
+    R2=1−∑i=1n​(yi​−yˉ​)2∑i=1n​(yi​−y^​i​)2​
+
+2. Phân loại (Classification)
+
+Mô hình phân loại sẽ phân loại các cổ phiếu vào các nhóm, chẳng hạn như "mua" hay "bán".
+
+    Cross-Entropy Loss (Log Loss): Sử dụng cho các mô hình phân loại nhị phân hoặc đa lớp. Đo lường sự khác biệt giữa phân phối xác suất dự đoán và phân phối xác suất thực tế.
+    Log Loss=−1n∑i=1n[yilog⁡(y^i)+(1−yi)log⁡(1−y^i)]
+    Log Loss=−n1​i=1∑n​[yi​log(y^​i​)+(1−yi​)log(1−y^​i​)]
+
+    Accuracy: Đo lường tỷ lệ phần trăm dự đoán đúng so với tổng số mẫu.
+    Accuracy=Soˆˊ lượng dự đoaˊn đuˊngTổng soˆˊ maˆ˜u
+    Accuracy=Tổng soˆˊ maˆ˜uSoˆˊ lượng dự đoaˊn đuˊng​
+
+    Precision, Recall, F1 Score: Các chỉ số này đặc biệt quan trọng khi đối mặt với các bộ dữ liệu mất cân bằng, chẳng hạn như khi phân loại cổ phiếu tăng và giảm.
+        Precision: Xác suất dự đoán đúng cổ phiếu "mua" khi dự đoán là "mua".
+    Precision=TPTP+FP
+    Precision=TP+FPTP​
+        Recall: Tỷ lệ cổ phiếu "mua" thực sự được nhận diện chính xác.
+    Recall=TPTP+FN
+    Recall=TP+FNTP​
+        F1 Score: Trung bình hài hòa của Precision và Recall.
+    F1=2⋅Precision⋅RecallPrecision+Recall
+    F1=2⋅Precision+RecallPrecision⋅Recall​
+
+    Trong đó TP (True Positive), FP (False Positive), FN (False Negative) là các thuật ngữ trong phân loại.
+
+Lựa chọn phương pháp đánh giá phụ thuộc vào mục tiêu của mô hình và đặc điểm của dữ liệu chứng khoán, chẳng hạn như tính chất của cổ phiếu, sự biến động và yêu cầu độ chính xác của dự đoán.
+You said:
+Viết mã python cho các hàm loss
+ChatGPT said:
+ChatGPT
+
+Dưới đây là các hàm loss phổ biến cho mô hình hồi quy và phân loại trong Python sử dụng thư viện numpy:
+1. Hàm Loss cho Hồi quy (Regression)
+Mean Squared Error (MSE)
+
+import numpy as np
+
+def mse(y_true, y_pred):
+    return np.mean((y_true - y_pred) ** 2)
+
+Root Mean Squared Error (RMSE)
+
+import numpy as np
+
+def rmse(y_true, y_pred):
+    return np.sqrt(np.mean((y_true - y_pred) ** 2))
+
+Mean Absolute Error (MAE)
+
+import numpy as np
+
+def mae(y_true, y_pred):
+    return np.mean(np.abs(y_true - y_pred))
+
+R-squared (R²)
+
+import numpy as np
+
+def r_squared(y_true, y_pred):
+    ss_total = np.sum((y_true - np.mean(y_true)) ** 2)
+    ss_residual = np.sum((y_true - y_pred) ** 2)
+    return 1 - (ss_residual / ss_total)
+
+2. Hàm Loss cho Phân loại (Classification)
+Cross-Entropy Loss (Log Loss)
+
+import numpy as np
+
+def cross_entropy_loss(y_true, y_pred):
+    # Tránh việc log(0) bằng cách thêm một giá trị nhỏ vào y_pred
+    epsilon = 1e-15
+    y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
+    return -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
+
+Accuracy
+
+import numpy as np
+
+def accuracy(y_true, y_pred):
+    y_pred_classes = np.round(y_pred)  # Chuyển đổi giá trị xác suất thành các lớp (0 hoặc 1)
+    return np.mean(y_true == y_pred_classes)
+
+Precision
+
+import numpy as np
+
+def precision(y_true, y_pred):
+    y_pred_classes = np.round(y_pred)
+    tp = np.sum((y_true == 1) & (y_pred_classes == 1))
+    fp = np.sum((y_true == 0) & (y_pred_classes == 1))
+    return tp / (tp + fp) if tp + fp > 0 else 0
+
+Recall
+
+import numpy as np
+
+def recall(y_true, y_pred):
+    y_pred_classes = np.round(y_pred)
+    tp = np.sum((y_true == 1) & (y_pred_classes == 1))
+    fn = np.sum((y_true == 1) & (y_pred_classes == 0))
+    return tp / (tp + fn) if tp + fn > 0 else 0
+
+F1 Score
+
+import numpy as np
+
+def f1_score(y_true, y_pred):
+    p = precision(y_true, y_pred)
+    r = recall(y_true, y_pred)
+    return 2 * (p * r) / (p + r) if p + r > 0 else 0
+
+3. Ví dụ Sử dụng
+
+Giả sử bạn có dữ liệu thực tế và dự đoán từ mô hình:
+
+# Dữ liệu mẫu
+y_true_regression = np.array([100, 200, 300, 400, 500])
+y_pred_regression = np.array([110, 195, 290, 405, 510])
+
+y_true_classification = np.array([1, 0, 1, 0, 1])
+y_pred_classification = np.array([0.8, 0.2, 0.9, 0.1, 0.85])
+
+# Kiểm tra hàm loss
+print("MSE:", mse(y_true_regression, y_pred_regression))
+print("RMSE:", rmse(y_true_regression, y_pred_regression))
+print("MAE:", mae(y_true_regression, y_pred_regression))
+print("R-squared:", r_squared(y_true_regression, y_pred_regression))
+
+print("Cross Entropy Loss:", cross_entropy_loss(y_true_classification, y_pred_classification))
+print("Accuracy:", accuracy(y_true_classification, y_pred_classification))
+print("Precision:", precision(y_true_classification, y_pred_classification))
+print("Recall:", recall(y_true_classification, y_pred_classification))
+print("F1 Score:", f1_score(y_true_classification, y_pred_classification))
+
+4. Lưu ý
+
+    Hàm cross_entropy_loss tính toán log loss cho các mô hình phân loại nhị phân. Nếu bạn làm việc với phân loại đa lớp, bạn sẽ cần một cách tiếp cận khác, như sử dụng một one-hot encoding cho nhãn và tính toán cross-entropy cho từng lớp.
+    Các hàm này có thể được mở rộng hoặc điều chỉnh tùy theo yêu cầu của bài toán cụ thể.

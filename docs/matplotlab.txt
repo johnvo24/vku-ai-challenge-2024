@@ -1,0 +1,176 @@
+Dưới đây là danh sách các lệnh vẽ biểu đồ cơ bản trong thư viện Matplotlib của Python, giúp bạn tạo ra các loại biểu đồ khác nhau:
+1. Cài đặt Matplotlib
+
+Đầu tiên, bạn cần cài đặt thư viện Matplotlib (nếu chưa cài đặt):
+
+pip install matplotlib
+
+2. Import Thư Viện
+
+Trước khi vẽ biểu đồ, bạn cần import matplotlib.pyplot:
+
+import matplotlib.pyplot as plt
+
+3. Các Lệnh Vẽ Biểu Đồ
+Biểu đồ đường (Line Plot)
+
+Đây là loại biểu đồ cơ bản nhất.
+
+import matplotlib.pyplot as plt
+
+x = [1, 2, 3, 4, 5]
+y = [1, 4, 9, 16, 25]
+
+plt.plot(x, y)  # Vẽ đường
+plt.xlabel('X-axis')  # Nhãn trục X
+plt.ylabel('Y-axis')  # Nhãn trục Y
+plt.title('Line Plot')  # Tiêu đề biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Biểu đồ cột (Bar Plot)
+
+Dùng để thể hiện giá trị theo các nhóm.
+
+x = ['A', 'B', 'C', 'D']
+y = [3, 7, 2, 5]
+
+plt.bar(x, y)  # Vẽ biểu đồ cột
+plt.xlabel('Category')  # Nhãn trục X
+plt.ylabel('Value')  # Nhãn trục Y
+plt.title('Bar Plot')  # Tiêu đề biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Biểu đồ cột ngang (Horizontal Bar Plot)
+
+Biểu đồ cột nằm ngang.
+
+plt.barh(x, y)  # Vẽ biểu đồ cột ngang
+plt.xlabel('Value')  # Nhãn trục X
+plt.ylabel('Category')  # Nhãn trục Y
+plt.title('Horizontal Bar Plot')  # Tiêu đề biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Biểu đồ histogram (Histogram)
+
+Dùng để phân tích phân phối của dữ liệu.
+
+data = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5]
+
+plt.hist(data, bins=5, edgecolor='black')  # Vẽ histogram
+plt.xlabel('Value')  # Nhãn trục X
+plt.ylabel('Frequency')  # Nhãn trục Y
+plt.title('Histogram')  # Tiêu đề biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Biểu đồ phân tán (Scatter Plot)
+
+Dùng để thể hiện mối quan hệ giữa hai biến.
+
+x = [1, 2, 3, 4, 5]
+y = [1, 4, 9, 16, 25]
+
+plt.scatter(x, y)  # Vẽ biểu đồ phân tán
+plt.xlabel('X-axis')  # Nhãn trục X
+plt.ylabel('Y-axis')  # Nhãn trục Y
+plt.title('Scatter Plot')  # Tiêu đề biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Biểu đồ vòng (Pie Chart)
+
+Dùng để thể hiện tỷ lệ phần trăm của các phần trong tổng thể.
+
+sizes = [30, 20, 40, 10]
+labels = ['A', 'B', 'C', 'D']
+
+plt.pie(sizes, labels=labels, autopct='%1.1f%%')  # Vẽ biểu đồ vòng
+plt.title('Pie Chart')  # Tiêu đề biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Biểu đồ hộp (Box Plot)
+
+Dùng để thể hiện phân phối dữ liệu theo quartiles.
+
+data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+plt.boxplot(data)  # Vẽ biểu đồ hộp
+plt.title('Box Plot')  # Tiêu đề biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Biểu đồ lỗi (Error Bar Plot)
+
+Dùng để vẽ biểu đồ với các thanh lỗi.
+
+x = [1, 2, 3, 4, 5]
+y = [1, 4, 9, 16, 25]
+yerr = [0.5, 1, 0.5, 2, 0.5]
+
+plt.errorbar(x, y, yerr=yerr, fmt='o')  # Vẽ biểu đồ với thanh lỗi
+plt.xlabel('X-axis')  # Nhãn trục X
+plt.ylabel('Y-axis')  # Nhãn trục Y
+plt.title('Error Bar Plot')  # Tiêu đề biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Biểu đồ 3D (3D Plot)
+
+Dùng để vẽ biểu đồ 3 chiều.
+
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+x = np.linspace(-5, 5, 100)
+y = np.linspace(-5, 5, 100)
+x, y = np.meshgrid(x, y)
+z = np.sin(np.sqrt(x**2 + y**2))
+
+ax.plot_surface(x, y, z, cmap='viridis')  # Vẽ biểu đồ 3D
+plt.title('3D Plot')  # Tiêu đề biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Vẽ nhiều biểu đồ trong một cửa sổ (Subplots)
+
+Dùng để vẽ nhiều biểu đồ trong cùng một cửa sổ.
+
+plt.subplot(2, 2, 1)  # 2 hàng, 2 cột, biểu đồ đầu tiên
+plt.plot([1, 2, 3], [1, 2, 3])
+
+plt.subplot(2, 2, 2)  # 2 hàng, 2 cột, biểu đồ thứ hai
+plt.bar([1, 2, 3], [3, 2, 1])
+
+plt.subplot(2, 2, 3)  # 2 hàng, 2 cột, biểu đồ thứ ba
+plt.scatter([1, 2, 3], [3, 2, 1])
+
+plt.subplot(2, 2, 4)  # 2 hàng, 2 cột, biểu đồ thứ tư
+plt.hist([1, 2, 2, 3, 3, 3], bins=3)
+
+plt.tight_layout()  # Tự động điều chỉnh khoảng cách giữa các biểu đồ
+plt.show()  # Hiển thị biểu đồ
+
+Vẽ đồ thị với nhiều đường (Multiple Lines)
+
+Dùng để vẽ nhiều đường trên cùng một biểu đồ.
+
+x = [1, 2, 3, 4, 5]
+y1 = [1, 4, 9, 16, 25]
+y2 = [1, 2, 3, 4, 5]
+
+plt.plot(x, y1, label='y = x^2')  # Đường đầu tiên
+plt.plot(x, y2, label='y = x')  # Đường thứ hai
+
+plt.xlabel('X-axis')  # Nhãn trục X
+plt.ylabel('Y-axis')  # Nhãn trục Y
+plt.title('Multiple Lines')  # Tiêu đề biểu đồ
+plt.legend()  # Hiển thị chú thích
+plt.show()  # Hiển thị biểu đồ
+
+4. Các Lệnh Tùy Chỉnh Biểu Đồ
+
+    Thêm chú thích: plt.legend()
+    Thêm lưới: plt.grid(True)
+    Đổi màu sắc: plt.plot(x, y, color='red')
+    Thêm nhãn trục: plt.xlabel('X-axis'), plt.ylabel('Y-axis')
+    Thêm tiêu đề: plt.title('Title')
+
+Hy vọng bạn sẽ tìm thấy những lệnh này hữu ích cho việc vẽ biểu đồ trong Matplotlib!

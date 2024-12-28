@@ -11,7 +11,7 @@ class Preprocessing:
         self.execute()
         self.scaler = StandardScaler()
         self.data = self.scaler.fit_transform(self.data)
-        self.data = pd.DataFrame(self.data)
+        self.data = pd.DataFrame(self.data,  columns=["DATE", "PRICE", "OPEN", 'HIGH', 'LOW', 'VOL', 'CHANGE'])
 
     def read_data(self, file_path: str):
         """
@@ -19,7 +19,7 @@ class Preprocessing:
             input: file name
             output: dataframe
         """
-        df = pd.read_csv(file_path)
+        df = pd.read_csv(file_path, usecols=["DATE", "PRICE", "OPEN", "HIGH", "LOW", "VOL", "CHANGE"])
         # Lazy data handling, need to be removed in real competition
         df = df.dropna()
         # Reverse data from bottom to top (from oldest to latest for more accurate prediction)
@@ -37,10 +37,8 @@ class Preprocessing:
                     row = str(row)
 
                     if col == 'DATE':
-                        new_data[col].append(Normalize.normalize_date(row))
+                        new_data[col].append(Normalize.normalize_date(row, format="%m/%d/%Y"))
                     else:
                         new_data[col].append(Normalize.normalize_number(row))
 
-        self.data = pd.DataFrame(new_data)
-
-        return self.data
+        self.data = pd.DataFrame(new_data,  columns=["DATE", "PRICE", "OPEN", 'HIGH', 'LOW', 'VOL', 'CHANGE'])

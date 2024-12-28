@@ -1,0 +1,100 @@
+Mô hình VARMAX (Vector Autoregressive Moving Average with Exogenous Regressors) là một mở rộng của mô hình VAR (Vector Autoregressive). Mô hình này kết hợp giữa autoregressive (AR), moving average (MA) và exogenous variables (X). VARMAX đặc biệt hữu ích khi bạn muốn mô hình hóa mối quan hệ giữa nhiều chuỗi thời gian (multivariate time series) trong đó có thể bao gồm cả các yếu tố ngoại sinh (exogenous variables) ảnh hưởng đến các chuỗi thời gian chính.
+
+Cấu trúc của VARMAX:
+
+    AR (Autoregressive): Sử dụng các giá trị quá khứ của các chuỗi thời gian để dự đoán giá trị hiện tại.
+    MA (Moving Average): Mô hình hóa ảnh hưởng của các nhiễu (shock) từ quá khứ lên các chuỗi thời gian.
+    X (Exogenous Variables): Các biến ngoại sinh có thể ảnh hưởng đến các chuỗi thời gian mà không phụ thuộc vào các chuỗi thời gian khác trong hệ thống.
+
+Công thức mô hình VARMAX:
+
+Mô hình VARMAX có thể được mô tả như sau:
+Yt=c+A1Yt−1+⋯+ApYt−p+B1Xt−1+⋯+BqXt−q+ϵt
+Yt​=c+A1​Yt−1​+⋯+Ap​Yt−p​+B1​Xt−1​+⋯+Bq​Xt−q​+ϵt​
+
+Trong đó:
+
+    YtYt​ là vector các chuỗi thời gian tại thời điểm tt.
+    XtXt​ là vector các biến ngoại sinh tại thời điểm tt.
+    A1,…,ApA1​,…,Ap​ là các ma trận trọng số cho các độ trễ (lags) của chuỗi thời gian.
+    B1,…,BqB1​,…,Bq​ là các ma trận trọng số cho các độ trễ của các biến ngoại sinh.
+    cc là vector các hằng số.
+    ϵtϵt​ là nhiễu trắng (white noise) tại thời điểm tt.
+
+Ưu điểm của VARMAX:
+
+    Tích hợp cả các yếu tố nội tại (AR, MA) và ngoại tại (X).
+    Có thể mô hình hóa mối quan hệ giữa nhiều chuỗi thời gian.
+    Phù hợp với các bài toán có dữ liệu phụ thuộc và chịu ảnh hưởng từ các yếu tố bên ngoài.
+
+Cài đặt mô hình VARMAX với Python:
+
+Để sử dụng mô hình VARMAX trong Python, bạn cần sử dụng thư viện statsmodels. Dưới đây là ví dụ về cách cài đặt và huấn luyện mô hình VARMAX trên dữ liệu giả lập.
+Mã nguồn ví dụ:
+
+import numpy as np
+import pandas as pd
+from statsmodels.tsa.statespace.varmax import VARMAX
+import matplotlib.pyplot as plt
+
+# Tạo dữ liệu giả lập (Ví dụ: Giá trị của PRICE và VOL)
+data = {
+    'DATE': pd.date_range(start='2023-01-01', periods=10, freq='D'),
+    'PRICE': [100, 101, 102, 103, 104, 105, 106, 107, 108, 109],
+    'VOL': [1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900],
+    'EXOG_VAR': [50, 51, 52, 53, 54, 55, 56, 57, 58, 59]  # Biến ngoại sinh
+}
+
+df = pd.DataFrame(data)
+df.set_index('DATE', inplace=True)
+
+# Xử lý dữ liệu đầu vào
+endog = df[['PRICE', 'VOL']]  # Các chuỗi thời gian chính (endogenous variables)
+exog = df[['EXOG_VAR']]  # Biến ngoại sinh (exogenous variables)
+
+# Chia dữ liệu thành tập huấn luyện và kiểm tra
+train_endog = endog.iloc[:-3]
+train_exog = exog.iloc[:-3]
+test_endog = endog.iloc[-3:]
+test_exog = exog.iloc[-3:]
+
+# Tạo và huấn luyện mô hình VARMAX
+model = VARMAX(train_endog, exog=train_exog, order=(1, 1))  # order=(p, q) với p là độ trễ AR và q là độ trễ MA
+fitted_model = model.fit(disp=False)
+
+# Dự đoán giá trị trong 3 bước tiếp theo
+forecast = fitted_model.forecast(steps=3, exog=test_exog)
+print(forecast)
+
+# Vẽ đồ thị dự đoán
+plt.figure(figsize=(10, 6))
+plt.plot(df.index, endog['PRICE'], label='Giá thực tế', color='blue')
+plt.plot(df.index[-3:], forecast[:, 0], label='Dự đoán PRICE', color='red', linestyle='--')
+plt.plot(df.index[-3:], forecast[:, 1], label='Dự đoán VOL', color='green', linestyle='--')
+plt.legend()
+plt.show()
+
+Giải thích mã nguồn:
+
+    Dữ liệu giả lập: Dữ liệu chứa ba cột chính là PRICE (giá trị cổ phiếu), VOL (khối lượng giao dịch), và EXOG_VAR (biến ngoại sinh).
+    Xử lý dữ liệu: Chúng ta chia dữ liệu thành chuỗi thời gian chính (endog) và biến ngoại sinh (exog).
+    Huấn luyện mô hình: Mô hình VARMAX được huấn luyện với độ trễ AR là 1 và độ trễ MA là 1.
+    Dự đoán: Sau khi huấn luyện, mô hình dự đoán giá trị trong 3 bước tiếp theo.
+    Vẽ đồ thị: Cuối cùng, chúng ta vẽ đồ thị cho thấy sự khác biệt giữa giá trị thực tế và giá trị dự đoán cho PRICE và VOL.
+
+Output dự đoán:
+
+Ví dụ về đầu ra có thể là:
+
+[[110.5  2000.5]
+ [111.0  2100.5]
+ [111.5  2200.5]]
+
+Trong đó:
+
+    Cột 1 là dự đoán giá trị của PRICE.
+    Cột 2 là dự đoán giá trị của VOL.
+
+Kết luận:
+
+Mô hình VARMAX là một công cụ mạnh mẽ để mô hình hóa mối quan hệ giữa nhiều chuỗi thời gian và các yếu tố ngoại sinh. Mô hình này có thể giúp bạn dự đoán các chỉ số tài chính, chẳng hạn như giá cổ phiếu, khối lượng giao dịch, với sự ảnh hưởng từ các yếu tố bên ngoài.
