@@ -9,9 +9,10 @@ data = data.values
 model = Modelling(input=data, num_predict_date=3, num_date=6)
 
 # XGBOOST MODELLING
-# model.xgboost.train()
-# model.xgboost.eval()
+model.xgboost.train()
+model.xgboost.eval()
 
 # LSTM MODELLING
-model.lstm.train()
-model.lstm.eval()
+# model.lstm.train()
+# model.lstm.eval()
+

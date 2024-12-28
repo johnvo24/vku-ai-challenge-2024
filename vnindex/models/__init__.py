@@ -24,7 +24,7 @@ class Modelling:
         self.input = data
 
         self.xgboost = XGBoost(self.input)
-        self.lstm = LSTM(self.input, num_predict_date)
+        # self.lstm = LSTM(self.input, num_predict_date)
 
     def data_split(self, data, num_date):
         new_df = []
