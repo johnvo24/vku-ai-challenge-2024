@@ -6,6 +6,3 @@ preprocessing = Preprocessing('res/dataset.csv')
 data = preprocessing.data
 data = data.values
 
-model = Modeling(data)
-model.xgboost.train()
-model.xgboost.eval()

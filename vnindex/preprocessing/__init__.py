@@ -9,8 +9,8 @@ class Preprocessing:
     def __init__(self, file_path: str):
         self.data = self.read_data(file_path)
         self.execute()
-        self.scaler = StandardScaler(self.data)
-        self.data = self.scaler.fit(self.data)
+        # self.scaler = StandardScaler(self.data)
+        # self.data = self.scaler.fit(self.data)
         self.data = pd.DataFrame(self.data)
 
     def read_data(self, file_path: str):
