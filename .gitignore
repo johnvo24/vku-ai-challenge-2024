@@ -7,5 +7,3 @@
 *.dist-info
 *.pyc
 *.dist-info/*
-
-*test*

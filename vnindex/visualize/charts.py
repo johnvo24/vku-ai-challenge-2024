@@ -19,6 +19,5 @@ class Chart:
         plt.savefig(f'res/charts/scatterplot_{x}_{y}.png', dpi=300, bbox_inches='tight')
 
     def PairPlot(self):
-        sns.pairplot(self.data[['PRICE', 'OPEN', 'HIGH', 'LOW', 'VOL', 'CHANGE']])
-        self.data['LOW'] = data['LOW'].str.replace(',', '').astype(float)
+        sns.pairplot(self.data[['DATE', 'PRICE', 'OPEN', 'HIGH', 'LOW', 'VOL', 'CHANGE']])
         plt.savefig(f'res/charts/pairplot.png', dpi=300, bbox_inches='tight')

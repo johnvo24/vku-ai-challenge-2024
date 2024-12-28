@@ -11,7 +11,7 @@ class Preprocessing:
         self.execute()
         self.scaler = StandardScaler()
         self.data = self.scaler.fit_transform(self.data)
-        self.data = pd.DataFrame(self.data)
+        self.data = pd.DataFrame(self.data,  columns=["DATE", "PRICE", "OPEN", 'HIGH', 'LOW', 'VOL', 'CHANGE'])
 
     def read_data(self, file_path: str):
         """
@@ -41,6 +41,4 @@ class Preprocessing:
                     else:
                         new_data[col].append(Normalize.normalize_number(row))
 
-        self.data = pd.DataFrame(new_data)
-
-        return self.data
+        self.data = pd.DataFrame(new_data,  columns=["DATE", "PRICE", "OPEN", 'HIGH', 'LOW', 'VOL', 'CHANGE'])
