@@ -32,6 +32,7 @@ class Modelling:
         # Call models
         # self.xgboost = XGBoost(self.input)
         self.lstm = LSTM(data, num_predict_date)
+        self.xgboost = XGBoost(self.input)
 
     def data_split(self, data, num_date, num_predict_date, target_col):
         '''

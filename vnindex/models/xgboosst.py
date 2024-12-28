@@ -1,22 +1,26 @@
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
+from vnindex import Preprocessing
 from sklearn.metrics import mean_squared_error
 import numpy as np
 
 class XGBoost:
     def __init__(self, data):
-        self.data = data
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(
-            self.data[:, :-1], self.data[:, -1], test_size=0.2, random_state=42
-        )
+        preprocessing = Preprocessing('res/dataset.csv')
+        data = preprocessing.data
+        data = data.values
+        self.X_data = data[:-1,:]
+        self.y_data = data[1:, 1]
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X_data, self.y_data, test_size=0.2, random_state=42)
+
         self.model = xgb.XGBRegressor(objective='reg:squarederror', colsample_bytree=0.3, learning_rate=0.01,
                          max_depth=5, alpha=10, n_estimators=1000)
 
     def train(self):
-        self.model.fit(self.x_train, self.y_train)
+        self.model.fit(self.X_train, self.y_train)
 
     def eval(self):
-        preds = self.model.predict(self.x_test)
+        preds = self.model.predict(self.X_test)
         print(preds.shape)
         mse = mean_squared_error(self.y_test, preds)
         print("MSE: %f" % (mse))

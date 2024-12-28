@@ -17,8 +17,8 @@ chart.PairPlot()
 # model = Modelling(input=data, num_predict_date=1, num_date=14)
 
 # XGBOOST MODELLING
-# model.xgboost.train()
-# model.xgboost.eval()
+model.xgboost.train()
+model.xgboost.eval()
 
 # LSTM MODELLING
 # model.lstm.train()
