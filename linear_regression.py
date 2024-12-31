@@ -12,9 +12,10 @@ class LinearRegressionModel():
     data = preprocessing.data
     data = data.values
     self.X_data = data[:-1,:]
+    # print(self.X_data)
     self.y_data = data[1:, 1]
     self.model = LinearRegression()
-    # print(pd.concat([pd.DataFrame(train_dataset), pd.DataFrame(label_dataset)], axis=1))
+    print(pd.concat([pd.DataFrame(self.X_data), pd.DataFrame(self.y_data)], axis=1))
 
   def train(self): 
     X_train, X_test, y_train, y_test = train_test_split(self.X_data, self.y_data, test_size=0.2, random_state=42)

@@ -19,13 +19,10 @@ class Normalize():
         normalized = float(normalized.replace('K', '')) * 1e3
     return normalized if normalized else float('nan')
   
-  def normalize_date(date_str, format='%d/%m/%Y'):
-    """
-    Convert a date string in the format into an integer representing the date in '__yymmdd' format.
-    Args:
-      date_str (str): The input date string in the format (ex: '%d/%m/%Y').
-    Returns:
-      int: The date as an integer in the format '__yymmdd'.
-    """
+  def normalize_date(date_str, format='%m/%d/%Y'):
+    date_str = date_str.split('/')
+    date_str[2] = '20' + date_str[2][0] + date_str[2][1]
+    date_str = date_str[0] + '/' + date_str[1] + '/' + date_str[2]
+
     date_obj = datetime.strptime(date_str, format)
     return int(date_obj.strftime("%Y%m%d"))%1000000
