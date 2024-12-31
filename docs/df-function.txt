@@ -1,0 +1,310 @@
+1. Kiểm tra và xử lý dữ liệu bị thiếu (Missing Data)
+
+    isna() / isnull(): Kiểm tra các giá trị thiếu (NaN).
+    notna() / notnull(): Kiểm tra các giá trị không thiếu.
+    dropna(): Loại bỏ các hàng hoặc cột có giá trị NaN.
+    fillna(): Thay thế giá trị NaN bằng một giá trị cụ thể (ví dụ: 0, giá trị trung bình, hoặc phương pháp nội suy).
+    replace(): Thay thế các giá trị cụ thể trong DataFrame.
+
+2. Chuyển đổi dữ liệu
+
+    astype(): Thay đổi kiểu dữ liệu của các cột.
+    to_numeric(): Chuyển đổi các giá trị trong cột thành kiểu số.
+    apply(): Áp dụng một hàm lên từng phần tử (hoặc theo cột/hàng) của DataFrame.
+    map(): Áp dụng một hàm cho các giá trị trong cột.
+    applymap(): Áp dụng một hàm cho từng phần tử của DataFrame (dành cho toàn bộ DataFrame).
+    get_dummies(): Chuyển các cột phân loại (categorical) thành các cột nhị phân (one-hot encoding).
+
+3. Thao tác với hàng và cột
+
+    drop(): Loại bỏ một hoặc nhiều hàng/cột.
+    rename(): Đổi tên cột hoặc hàng.
+    set_index(): Đặt một cột làm chỉ mục (index) của DataFrame.
+    reset_index(): Đặt lại chỉ mục (index) về mặc định.
+    iloc[]: Truy cập dữ liệu theo vị trí (index) số nguyên.
+    loc[]: Truy cập dữ liệu theo nhãn (label) chỉ mục.
+    squeeze(): Rút gọn DataFrame một cột thành Series nếu chỉ có một cột.
+    T: Chuyển vị (transpose) của DataFrame.
+
+4. Xử lý chuỗi (String Handling)
+
+    str.contains(): Kiểm tra nếu chuỗi có chứa một từ khóa.
+    str.startswith(): Kiểm tra nếu chuỗi bắt đầu với một từ khóa.
+    str.endswith(): Kiểm tra nếu chuỗi kết thúc với một từ khóa.
+    str.split(): Tách chuỗi thành một danh sách.
+    str.replace(): Thay thế một phần của chuỗi.
+    str.upper(), str.lower(), str.title(): Chuyển đổi chữ hoa, chữ thường, hoặc chữ cái đầu tiên của mỗi từ thành chữ hoa.
+
+5. Xử lý dữ liệu phân nhóm (Group by)
+
+    groupby(): Phân nhóm dữ liệu theo một hoặc nhiều cột.
+    agg(): Áp dụng các phép toán tổng hợp (aggregation) cho mỗi nhóm.
+    sum(), mean(), count(), min(), max(): Tính toán các giá trị thống kê cho mỗi nhóm.
+
+6. Thao tác với dữ liệu số
+
+    mean(): Tính giá trị trung bình.
+    median(): Tính giá trị trung vị.
+    std(): Tính độ lệch chuẩn.
+    sum(): Tính tổng.
+    min(), max(): Tìm giá trị nhỏ nhất và lớn nhất.
+    cumsum(): Tính tổng cộng dồn.
+    rank(): Xếp hạng các giá trị trong cột.
+
+7. Sắp xếp và lọc
+
+    sort_values(): Sắp xếp các giá trị trong một hoặc nhiều cột.
+    sort_index(): Sắp xếp theo chỉ mục.
+    query(): Lọc dữ liệu theo điều kiện (sử dụng cú pháp giống SQL).
+    isin(): Kiểm tra xem giá trị có trong một danh sách cụ thể không.
+
+8. Thống kê
+
+    describe(): Cung cấp các thông tin thống kê cơ bản (số lượng, trung bình, độ lệch chuẩn, min, max, v.v.).
+    corr(): Tính toán ma trận tương quan giữa các cột.
+    cov(): Tính toán ma trận hiệp phương sai giữa các cột.
+    value_counts(): Đếm số lần xuất hiện của các giá trị trong một cột.
+
+9. Kết hợp DataFrame
+
+    concat(): Kết hợp nhiều DataFrame theo chiều dọc hoặc chiều ngang.
+    merge(): Kết hợp DataFrame theo cách giống SQL join.
+    join(): Kết hợp các DataFrame bằng cách nối theo chỉ mục (index).
+
+10. Xử lý dữ liệu thời gian (DateTime)
+
+    to_datetime(): Chuyển đổi các cột thành kiểu datetime.
+    dt: Truy cập các thuộc tính của dữ liệu thời gian (năm, tháng, ngày, giờ, phút, giây).
+
+11. Xử lý NaN và thay thế
+
+    fillna(): Thay thế các giá trị NaN bằng một giá trị cụ thể.
+    ffill(): Điền giá trị NaN bằng giá trị của ô trên (forward fill).
+    bfill(): Điền giá trị NaN bằng giá trị của ô dưới (backward fill).
+
+12. Các phép toán khác
+
+    pivot(): Chuyển đổi dữ liệu từ dạng dài sang dạng rộng.
+    pivot_table(): Tạo bảng pivot với các phép toán tổng hợp.
+    melt(): Chuyển đổi dữ liệu từ dạng rộng sang dạng dài.
+
+13. Cải thiện hiệu suất
+
+    memory_usage(): Kiểm tra bộ nhớ sử dụng bởi các cột trong DataFrame.
+    astype(): Chuyển đổi kiểu dữ liệu để tiết kiệm bộ nhớ (ví dụ: chuyển từ float64 sang float32).
+
+14. Lưu và tải dữ liệu
+
+    to_csv(): Lưu DataFrame vào file CSV.
+    read_csv(): Đọc dữ liệu từ file CSV.
+    to_excel(): Lưu DataFrame vào file Excel.
+    read_excel(): Đọc dữ liệu từ file Excel.
+
+15. Các hàm khác
+
+    sample(): Lấy mẫu ngẫu nhiên từ DataFrame.
+    duplicated(): Kiểm tra các hàng bị trùng lặp.
+    drop_duplicates(): Loại bỏ các hàng trùng lặp.
+
+1. Kiểm tra và xử lý dữ liệu bị thiếu (Missing Data)
+
+import pandas as pd
+import numpy as np
+
+# Tạo DataFrame với giá trị NaN
+df = pd.DataFrame({
+    'Name': ['Alice', 'Bob', 'Charlie', np.nan],
+    'Age': [25, np.nan, 35, 40],
+    'Salary': [50000, 60000, np.nan, 80000]
+})
+
+# Kiểm tra các giá trị NaN
+print(df.isna())
+
+# Thay thế NaN bằng giá trị cụ thể
+df.fillna({'Age': df['Age'].mean(), 'Salary': 60000}, inplace=True)
+print(df)
+
+# Loại bỏ các hàng có giá trị NaN
+df.dropna(inplace=True)
+print(df)
+
+2. Chuyển đổi dữ liệu
+
+# Chuyển kiểu dữ liệu của cột 'Age' thành kiểu int
+df['Age'] = df['Age'].astype(int)
+print(df)
+
+# Áp dụng một hàm lên từng phần tử của cột 'Salary'
+df['Salary'] = df['Salary'].apply(lambda x: x * 1.1)
+print(df)
+
+# Áp dụng hàm cho toàn bộ DataFrame (ví dụ: nhân tất cả các giá trị với 2)
+df = df.applymap(lambda x: x * 2)
+print(df)
+
+# Chuyển đổi cột phân loại thành cột nhị phân (one-hot encoding)
+df = pd.get_dummies(df, columns=['Name'])
+print(df)
+
+3. Thao tác với hàng và cột
+
+# Đổi tên cột
+df.rename(columns={'Salary': 'Income'}, inplace=True)
+print(df)
+
+# Đặt cột 'Age' làm chỉ mục
+df.set_index('Age', inplace=True)
+print(df)
+
+# Truy cập dữ liệu theo vị trí (ví dụ: lấy dòng thứ 2, cột 'Income')
+print(df.iloc[1]['Income'])
+
+# Truy cập dữ liệu theo nhãn (ví dụ: lấy dữ liệu của Age = 25)
+print(df.loc[25])
+
+# Chuyển vị DataFrame (transpose)
+df_T = df.T
+print(df_T)
+
+4. Xử lý chuỗi (String Handling)
+
+# Kiểm tra nếu chuỗi có chứa từ 'Alice'
+df['Name'] = ['Alice', 'Bob', 'Charlie', 'David']
+print(df['Name'].str.contains('Alice'))
+
+# Thay thế 'Bob' bằng 'Robert' trong cột 'Name'
+df['Name'] = df['Name'].str.replace('Bob', 'Robert')
+print(df)
+
+# Chuyển tất cả tên thành chữ hoa
+df['Name'] = df['Name'].str.upper()
+print(df)
+
+5. Xử lý dữ liệu phân nhóm (Group by)
+
+# Tạo DataFrame mẫu
+df = pd.DataFrame({
+    'Name': ['Alice', 'Bob', 'Alice', 'Bob'],
+    'Age': [25, 30, 25, 30],
+    'Salary': [50000, 60000, 55000, 65000]
+})
+
+# Phân nhóm theo 'Name' và tính tổng lương
+grouped = df.groupby('Name')['Salary'].sum()
+print(grouped)
+
+6. Thao tác với dữ liệu số
+
+# Tính trung bình lương
+mean_salary = df['Salary'].mean()
+print('Mean Salary:', mean_salary)
+
+# Tính giá trị trung vị
+median_salary = df['Salary'].median()
+print('Median Salary:', median_salary)
+
+# Tính tổng cộng dồn
+df['Cumulative Salary'] = df['Salary'].cumsum()
+print(df)
+
+7. Sắp xếp và lọc
+
+# Sắp xếp theo lương (Salary)
+df_sorted = df.sort_values(by='Salary')
+print(df_sorted)
+
+# Lọc các hàng có lương lớn hơn 60000
+filtered_df = df[df['Salary'] > 60000]
+print(filtered_df)
+
+8. Thống kê
+
+# Thống kê cơ bản
+print(df.describe())
+
+# Tính ma trận tương quan
+corr_matrix = df.corr()
+print(corr_matrix)
+
+9. Kết hợp DataFrame
+
+# Tạo DataFrame khác
+df2 = pd.DataFrame({
+    'Name': ['Eve', 'Frank'],
+    'Age': [35, 40],
+    'Salary': [70000, 75000]
+})
+
+# Kết hợp hai DataFrame theo chiều dọc
+df_combined = pd.concat([df, df2], ignore_index=True)
+print(df_combined)
+
+# Kết hợp hai DataFrame theo chỉ mục
+df_merged = df.merge(df2, on='Age', how='outer')
+print(df_merged)
+
+10. Xử lý dữ liệu thời gian (DateTime)
+
+# Chuyển đổi cột 'Date' thành kiểu datetime
+df['Date'] = pd.to_datetime(['2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04'])
+print(df['Date'])
+
+# Truy cập các thuộc tính thời gian
+df['Year'] = df['Date'].dt.year
+df['Month'] = df['Date'].dt.month
+df['Day'] = df['Date'].dt.day
+print(df)
+
+11. Xử lý NaN và thay thế
+
+# Điền giá trị NaN bằng giá trị của ô trên (forward fill)
+df.fillna(method='ffill', inplace=True)
+print(df)
+
+# Điền giá trị NaN bằng giá trị của ô dưới (backward fill)
+df.fillna(method='bfill', inplace=True)
+print(df)
+
+12. Các phép toán khác
+
+# Pivot dữ liệu
+df = pd.DataFrame({
+    'Date': ['2023-01-01', '2023-01-02', '2023-01-03'],
+    'City': ['New York', 'Los Angeles', 'Chicago'],
+    'Temperature': [30, 25, 28]
+})
+pivot_df = df.pivot(index='Date', columns='City', values='Temperature')
+print(pivot_df)
+
+13. Cải thiện hiệu suất
+
+# Kiểm tra bộ nhớ sử dụng của các cột
+print(df.memory_usage())
+
+# Chuyển đổi kiểu dữ liệu để tiết kiệm bộ nhớ
+df['Salary'] = df['Salary'].astype('float32')
+print(df.memory_usage())
+
+14. Lưu và tải dữ liệu
+
+# Lưu DataFrame vào file CSV
+df.to_csv('data.csv', index=False)
+
+# Đọc dữ liệu từ file CSV
+df_from_csv = pd.read_csv('data.csv')
+print(df_from_csv)
+
+15. Các hàm khác
+
+# Lấy mẫu ngẫu nhiên từ DataFrame
+sample_df = df.sample(2)
+print(sample_df)
+
+# Kiểm tra các hàng bị trùng lặp
+duplicates = df[df.duplicated()]
+print(duplicates)
+
+# Loại bỏ các hàng trùng lặp
+df_no_duplicates = df.drop_duplicates()
+print(df_no_duplicates)

@@ -25,7 +25,7 @@ class Preprocessing:
             input: file name
             output: dataframe
         """
-        df = pd.read_csv(file_path)
+        df = pd.read_csv(file_path, usecols=["DATE", "PRICE", "OPEN", "HIGH", "LOW", "VOL", "CHANGE"])
         # Lazy data handling, need to be removed in real competition
         df = df.dropna()
         # Reverse data from bottom to top (from oldest to latest for more accurate prediction)
@@ -42,8 +42,13 @@ class Preprocessing:
                 if row != '':
                     row = str(row)
 
+<<<<<<< HEAD
                     if col == 'Date':
                         new_data[col].append(Normalize.normalize_date(row))
+=======
+                    if col == 'DATE':
+                        new_data[col].append(Normalize.normalize_date(row, format="%m/%d/%Y"))
+>>>>>>> 5ecbe69d6ae53fb8a3d56205a1b2f6b563722492
                     else:
                         new_data[col].append(Normalize.normalize_number(row))
 

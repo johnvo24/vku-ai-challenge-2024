@@ -1,0 +1,102 @@
+XGBoost (Extreme Gradient Boosting) là một thuật toán học máy rất mạnh mẽ và phổ biến, đặc biệt trong các bài toán phân loại (classification) và hồi quy (regression). Dưới đây là hướng dẫn sử dụng XGBoost để giải quyết bài toán phân loại (classification) trong Python.
+Cài đặt XGBoost
+
+Đầu tiên, bạn cần cài đặt thư viện xgboost. Nếu chưa cài, bạn có thể cài đặt thông qua pip:
+
+pip install xgboost
+
+Các bước sử dụng XGBoost cho bài toán phân loại
+1. Import các thư viện cần thiết
+
+import xgboost as xgb
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+2. Chuẩn bị dữ liệu
+
+Giả sử bạn có một bộ dữ liệu phân loại, bạn cần tách dữ liệu thành các đặc trưng (features) và nhãn (labels). Sau đó, bạn chia dữ liệu thành tập huấn luyện và kiểm tra.
+
+Ví dụ sử dụng bộ dữ liệu Iris có sẵn trong sklearn:
+
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+
+# Tải bộ dữ liệu Iris
+data = load_iris()
+X = data.data
+y = data.target
+
+# Chia dữ liệu thành tập huấn luyện và kiểm tra
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+3. Tạo và huấn luyện mô hình XGBoost
+
+Để huấn luyện mô hình XGBoost, bạn cần sử dụng XGBClassifier cho bài toán phân loại.
+
+# Tạo mô hình XGBoost
+model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='mlogloss')
+
+# Huấn luyện mô hình
+model.fit(X_train, y_train)
+
+    use_label_encoder=False: Giúp tránh cảnh báo khi huấn luyện mô hình (tùy chọn này có thể cần thiết cho các phiên bản mới của XGBoost).
+    eval_metric='mlogloss': Định nghĩa metric đánh giá cho mô hình (thường là mlogloss cho phân loại nhiều lớp).
+
+4. Dự đoán và đánh giá mô hình
+
+Sau khi huấn luyện xong mô hình, bạn có thể sử dụng mô hình để dự đoán trên tập kiểm tra và đánh giá hiệu suất.
+
+# Dự đoán trên dữ liệu kiểm tra
+y_pred = model.predict(X_test)
+
+# Tính độ chính xác
+accuracy = accuracy_score(y_test, y_pred)
+print(f'Accuracy: {accuracy * 100:.2f}%')
+
+5. Tuning mô hình (Tối ưu hóa siêu tham số)
+
+Để cải thiện hiệu suất mô hình, bạn có thể thực hiện việc tối ưu hóa các siêu tham số của XGBoost. Ví dụ, sử dụng GridSearchCV hoặc RandomizedSearchCV từ sklearn.
+
+from sklearn.model_selection import GridSearchCV
+
+# Định nghĩa các siêu tham số cần tối ưu hóa
+param_grid = {
+    'max_depth': [3, 6, 10],
+    'learning_rate': [0.01, 0.1, 0.3],
+    'n_estimators': [50, 100, 200]
+}
+
+# Tạo mô hình GridSearchCV
+grid_search = GridSearchCV(estimator=xgb.XGBClassifier(use_label_encoder=False, eval_metric='mlogloss'),
+                           param_grid=param_grid, cv=3, n_jobs=-1, verbose=2)
+
+# Huấn luyện GridSearchCV
+grid_search.fit(X_train, y_train)
+
+# In ra các siêu tham số tốt nhất
+print(f'Best parameters: {grid_search.best_params_}')
+
+6. Dự đoán với mô hình tối ưu
+
+Sau khi tìm được siêu tham số tốt nhất, bạn có thể sử dụng mô hình tối ưu để dự đoán và đánh giá lại.
+
+# Dự đoán với mô hình tốt nhất
+best_model = grid_search.best_estimator_
+y_pred_best = best_model.predict(X_test)
+
+# Đánh giá
+accuracy_best = accuracy_score(y_test, y_pred_best)
+print(f'Optimized Accuracy: {accuracy_best * 100:.2f}%')
+
+Các tham số quan trọng của XGBoost
+
+    learning_rate: Tốc độ học (thường gọi là eta), có ảnh hưởng đến việc học nhanh hay chậm của mô hình.
+    n_estimators: Số lượng cây quyết định trong mô hình.
+    max_depth: Chiều sâu tối đa của mỗi cây quyết định.
+    subsample: Tỷ lệ mẫu dữ liệu dùng để huấn luyện mỗi cây.
+    colsample_bytree: Tỷ lệ cột (feature) được chọn ngẫu nhiên cho mỗi cây.
+    alpha và lambda: Các tham số điều chỉnh mức độ chính quy (regularization) của mô hình.
+
+XGBoost là một thuật toán mạnh mẽ và có khả năng đạt được hiệu suất rất cao trong bài toán phân loại và hồi quy.

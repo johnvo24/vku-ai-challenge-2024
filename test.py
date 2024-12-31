@@ -1,4 +1,4 @@
-from vnindex import Preprocessing, Modelling
+from vnindex import Preprocessing, Modelling, Chart
 import numpy as np
 import pandas as pd
 
