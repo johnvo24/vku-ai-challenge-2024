@@ -21,7 +21,7 @@ class Normalize():
       if int(normalized) == 0: normalized = float(random.randint(1, 9))
     return normalized if normalized else float('nan')
   
-  def normalize_date(date_str, format='%d/%m/%Y'):
+  def normalize_date(date_str, format='%m/%d/%Y'):
     """
     Convert a date string in the format into an integer representing the date in '__yymmdd' format.
     Args:
@@ -29,5 +29,11 @@ class Normalize():
     Returns:
       int: The date as an integer in the format '__yymmdd'.
     """
+    date_str = date_str.split('/')
+    if len(date_str[2]) == 2:
+      date_str[2] = '20' + date_str[2][0] + date_str[2][1]
+      date_str = date_str[0] + '/' + date_str[1] + '/' + date_str[2]
+    else: date_str = "/".join(date_str)
+
     date_obj = datetime.strptime(date_str, format)
     return int(date_obj.strftime("%Y%m%d"))%1000000

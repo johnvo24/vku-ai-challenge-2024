@@ -21,6 +21,7 @@ class LSTM:
         self.y_train = torch.tensor(self.data['train']['y'], dtype=torch.float32)
         self.x_test = torch.tensor(self.data['test']['x'], dtype=torch.float32)
         self.y_test = torch.tensor(self.data['test']['y'], dtype=torch.float32)
+        print(self.x_train)
 
         self.epoch = 1000
         self.batch_size = 8

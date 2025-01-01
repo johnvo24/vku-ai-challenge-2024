@@ -10,7 +10,8 @@ class XGBoost:
         data = preprocessing.data
         data = data.values
         self.X_data = data[:-1,:]
-        self.y_data = data[1:, 1]
+        self.y_data = data[1:, 1:5]
+        print((self.X_data, self.y_data))
         self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X_data, self.y_data, test_size=0.2, random_state=42)
 
         self.model = xgb.XGBRegressor(objective='reg:squarederror', colsample_bytree=0.3, learning_rate=0.01,

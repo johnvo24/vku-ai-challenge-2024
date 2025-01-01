@@ -12,8 +12,8 @@ def read_data(file_path: str):
   # Lazy data handling, need to be removed in real competition
   df = df.dropna()
   # Reverse data from bottom to top (from oldest to latest for more accurate prediction)
-  df_reversed = df.iloc[::-1].reset_index(drop=True)
-  return df_reversed
+  df = df.iloc[::-1].reset_index(drop=True)
+  return df
 
 def execute(data):
   """

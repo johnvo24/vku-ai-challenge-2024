@@ -19,26 +19,27 @@ class Preprocessing:
             input: file name
             output: dataframe
         """
-        df = pd.read_csv(file_path, usecols=["DATE", "PRICE", "OPEN", "HIGH", "LOW", "VOL", "CHANGE"])
+        df = pd.read_csv(file_path, usecols=["Date", "Price", "Open", 'High', 'Low', 'Vol.', 'Change %'])
         # Lazy data handling, need to be removed in real competition
         df = df.dropna()
         # Reverse data from bottom to top (from oldest to latest for more accurate prediction)
-        df_reversed = df.iloc[::-1].reset_index(drop=True)
-        return df_reversed
+        # df = df.iloc[::-1].reset_index(drop=True) #dataset.csv
+        return df
 
     def execute(self):
         """
             Use for execute preprocessing
         """
-        new_data = {'DATE': [], 'PRICE': [], 'OPEN': [], 'HIGH': [], 'LOW': [], 'VOL': [], 'CHANGE': []}
+        new_data = {'Date': [], 'Price': [], 'Open': [], 'High': [], 'Low': [], 'Vol.': [], 'Change %': []}
         for col in self.data:
             for row in self.data[col]:
                 if row != '':
                     row = str(row)
 
-                    if col == 'DATE':
-                        new_data[col].append(Normalize.normalize_date(row, format="%m/%d/%Y"))
+                    if col == 'Date':
+                        # new_data[col].append(Normalize.normalize_date(row, format=("%d/%m/%Y"))) # dataset.csv
+                        new_data[col].append(Normalize.normalize_date(row))
                     else:
                         new_data[col].append(Normalize.normalize_number(row))
 
-        self.data = pd.DataFrame(new_data,  columns=["DATE", "PRICE", "OPEN", 'HIGH', 'LOW', 'VOL', 'CHANGE'])
+        self.data = pd.DataFrame(new_data)
