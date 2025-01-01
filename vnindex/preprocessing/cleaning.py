@@ -18,3 +18,7 @@ for column in columns_to_normalize:
     df[column] = df[column].apply(lambda x: Normalize.normalize_number(str(x)))
 print(f"Num rows with NaN: {df.isna().any(axis=1).sum()}")
 print(f"Rows with NaN: {df[df.isna().any(axis=1)]}")
+
+import torch
+torch.concat()
+
