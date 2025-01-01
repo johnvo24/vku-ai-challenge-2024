@@ -1,5 +1,7 @@
 import numpy as np
+from vnindex.models.xgboosst import XGBoost
 from vnindex.models.lstm import LSTM
+from vnindex.models.gru import GRU
 
 class Modelling:
     '''
@@ -10,26 +12,22 @@ class Modelling:
         print(f'Input shape: {inp.shape}, Output shape: {out.shape}')
 
         # Split into training and testing data
-        threshold = int(0.8 * len(inp))
         data = {
             'train': {
-                # 'x': np.delete(input[:threshold], target_col, axis=-1),
-                'x': inp[:threshold, :, :],
-                'y': out[:threshold, :]
-            },
-            'test': {
-                # 'x': np.delete(input[threshold:], target_col, axis=-1),
-                'x': inp[threshold:, :, :],
-                'y': out[threshold:, :]
+                'x': inp[:, :, :],
+                'y': out[:, :, :]
             }
         }
 
-        print(f'X Training shape: {data["train"]["x"].shape}, X Testing shape: {data["test"]["x"].shape}')
-        print(f'Y Training shape: {data["train"]["y"].shape}, Y Testing shape: {data["test"]["y"].shape}')
+        print(f'X Training shape: {data["train"]["x"].shape}')
+        print(f'Y Training shape: {data["train"]["y"].shape}')
         self.input = data
 
         # Call models
-        self.lstm = LSTM(data, num_predict_date)
+        # self.xgboost = XGBoost(self.input)
+        # self.lstm = LSTM(data, num_predict_date)
+        # self.xgboost = XGBoost(self.input)
+        self.gru = GRU(self.input, num_predict_date)
 
     def data_split(self, data, num_date, num_predict_date, target_col):
         '''
@@ -43,8 +41,8 @@ class Modelling:
             temp_out = []
             for j in range(i, i + num_date):
                 temp_inp.append(data[j])
-            for j in range(i + num_date, i + num_date + num_predict_date):
-                temp_out.append(data[j][target_col])
+
+            temp_out.append(data[j + 1])
 
             input.append(temp_inp)
             output.append(temp_out)

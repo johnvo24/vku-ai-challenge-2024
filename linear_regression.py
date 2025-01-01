@@ -14,9 +14,13 @@ class LinearRegressionModel():
     data = self.preprocessing.data
     data = data.values
     self.X_data = data[:-1,:]
+    # print(self.X_data)
     self.y_data = data[1:, 1]
     self.model = LinearRegression()
+<<<<<<< HEAD
     self.folder = "results/linear_regression/"
+=======
+>>>>>>> 9f676152c2c05a8c9557b9a83d37937fb8c204aa
     print(pd.concat([pd.DataFrame(self.X_data), pd.DataFrame(self.y_data)], axis=1))
 
   def train(self): 
